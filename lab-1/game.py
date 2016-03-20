@@ -7,7 +7,7 @@ WINDOW_WIDTH = 640
 WINDOW_HEIGHT = 650
 CELL_SIZE = 5
 
-FPS = 10
+FPS = 30
 
 BLUE = (0, 0, 100)
 WHITE = (255, 255, 255)
@@ -40,6 +40,11 @@ def blankGrid():
 def startingGridRandom(lifeDict):
 	for item in lifeDict:
 		lifeDict[item] = random.randint(0,1)
+	return lifeDict
+
+def startingClearGrid(lifeDict):
+	for item in lifeDict:
+		lifeDict[item] = 0
 	return lifeDict
 
 #Colours the cells black for life and blue for no life
@@ -189,7 +194,8 @@ def button_actions(display, message, lifeDict):
 		print 'Random'
 		lifeDict = startingGridRandom(lifeDict)
 	elif message == 'Clear':
-		pass
+		print 'Clear'
+		lifeDict = startingClearGrid(lifeDict)
 
 def button(display, msg, x, y, w, h, i_color, a_color, lifeDict):
 	mouse = pygame.mouse.get_pos()
@@ -197,7 +203,7 @@ def button(display, msg, x, y, w, h, i_color, a_color, lifeDict):
 
 	if x+w > mouse[0] > x and y+h > mouse[1] > y:
 		pygame.draw.rect(display, a_color, (x, y, w, h))
-		if click[0] == 1 and True:
+		if click == (1, 0, 0):
 			button_actions(display, msg, lifeDict)
 	else:
 		pygame.draw.rect(display, i_color, (x, y, w, h))
@@ -214,11 +220,7 @@ def main():
 	pygame.display.set_caption('Game of Life')
 	display.fill(BLUE)	
 
-	global lifeDict 
 	lifeDict = blankGrid()
-	# lifeDict = startingGridRandom(lifeDict) # Assign random life
-	# lifeDict = startingGosperGliderGun(lifeDict)
-	# lifeDict = startingDiehard(lifeDict)
 
 	#Colours the live cells, blanks the dead
 	for item in lifeDict:
@@ -232,7 +234,7 @@ def main():
 			if event.type == QUIT:
 				pygame.quit()
 				sys.exit()
-		 #runs a tick
+		#runs a tick
 		button(display, 'Clear', 10, 621, 80, 29, DARK_RED, LIGH_RED, lifeDict)
 		button(display, 'Glider Gun', 130, 621, 90, 29, DARK_RED, LIGH_RED, lifeDict)
 		button(display, 'Diehard', 230, 621, 90, 29, DARK_RED, LIGH_RED, lifeDict)
